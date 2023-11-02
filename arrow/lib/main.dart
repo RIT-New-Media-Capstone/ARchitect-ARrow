@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'ARchitect-ARrow'),
     );
   }
 }
@@ -63,12 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    List<String> _locations = ['A', 'B', 'C', 'D']; // Option 2
+    String? _selectedLocation;
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -96,12 +92,28 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'You have pushed the button this many times:',
+              'Your Location',
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text('Open route'),
             ),
+            DropdownButton(
+              value: _selectedLocation,
+              hint: const Text('Select Location'),
+              items: _locations.map((String items) {
+                return DropdownMenuItem(
+                  value: items,
+                  child: Text(items),
+                );
+              }).toList(),
+              onChanged: (String? value) {
+                setState(() {
+                  _selectedLocation = value!;
+                  debugPrint('Value Changed: $value');
+                });
+              },
+            )
           ],
         ),
       ),
@@ -112,4 +124,13 @@ class _MyHomePageState extends State<MyHomePage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+}
+
+enum Locations {
+  placeA('Place A', 250, 100);
+
+  const Locations(this.place, this.lat, this.long);
+  final String place;
+  final double lat;
+  final double long;
 }
