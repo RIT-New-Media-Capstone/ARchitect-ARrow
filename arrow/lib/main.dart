@@ -49,46 +49,25 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  Locations? _selectedLocation;
+  String? _dropdownHintText;
 
   @override
   Widget build(BuildContext context) {
-    List<String> _locations = ['A', 'B', 'C', 'D']; // Option 2
-    String? _selectedLocation;
+    List<Locations> _locations = [Locations.placeA,];
+
+    if (_selectedLocation == null) {
+      _dropdownHintText = 'Select Location';
+    } else {
+      _dropdownHintText = _selectedLocation!.place;
+    }
+
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
@@ -98,33 +77,30 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {},
               child: const Text('Open route'),
             ),
-            DropdownButton(
+            DropdownButton<Locations>(
               value: _selectedLocation,
-              hint: const Text('Select Location'),
-              items: _locations.map((String items) {
-                return DropdownMenuItem(
-                  value: items,
-                  child: Text(items),
+              hint: Text(_dropdownHintText!), // Dynamic hint text
+              items: _locations.map((location) {
+                return DropdownMenuItem<Locations>(
+                  value: location,
+                  child: Text(location.place),
                 );
               }).toList(),
-              onChanged: (String? value) {
+              onChanged: (Locations? value) {
                 setState(() {
-                  _selectedLocation = value!;
-                  debugPrint('Value Changed: $value');
+                  _selectedLocation = value;
+                  debugPrint('Value Changed: ${value?.place}');
                 });
               },
             )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
+
+
 
 enum Locations {
   placeA('Place A', 250, 100);
