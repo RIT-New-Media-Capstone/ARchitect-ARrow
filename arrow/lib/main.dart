@@ -55,8 +55,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     List<Locations> _locations = [
-      new Locations("placeA", 300, 400),
-      new Locations("placeB", 100, 400)
+      Locations("placeA", 300, 400),
+      Locations("placeB", 100, 400),
     ];
 
     if (_selectedLocation == null) {
@@ -88,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   DropdownButton<Locations>(
                     value: _selectedLocation,
-                    hint: Text(_dropdownHintText!), // Dynamic hint text
+                    hint: Text(_dropdownHintText!),
                     items: _locations.map((location) {
                       return DropdownMenuItem<Locations>(
                         value: location,
@@ -98,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     onChanged: (Locations? value) {
                       setState(() {
                         _selectedLocation = value;
-                        debugPrint('Value Changed: ${value?.place}');
+                        debugPrint('Value Changed: ${value?.place}, ${value?.lat}, ${value?.long}');
                       });
                     },
                   ),
@@ -149,13 +149,14 @@ class Locations {
   final double long;
 
   Locations(this.place, this.lat, this.long);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Locations &&
+          runtimeType == other.runtimeType &&
+          place == other.place;
+
+  @override
+  int get hashCode => place.hashCode;
 }
-// enum Locations {
-//   placeA('Place A', 250, 100);
-
-
-//   const Locations(this.place, this.lat, this.long);
-//   final String place;
-//   final double lat;
-//   final double long;
-// }
