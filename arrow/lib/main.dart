@@ -54,7 +54,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Locations> _locations = [Locations.placeA,];
+    List<Locations> _locations = [
+      new Locations("placeA", 300, 400),
+      new Locations("placeB", 100, 400)
+    ];
 
     if (_selectedLocation == null) {
       _dropdownHintText = 'Select Location';
@@ -68,31 +71,71 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            Container(
+              height: 260,
+              width: 350,
+              margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
+              color: Colors.blue,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  const Text(
+                    'where you are information',
+                  ),
+                  DropdownButton<Locations>(
+                    value: _selectedLocation,
+                    hint: Text(_dropdownHintText!), // Dynamic hint text
+                    items: _locations.map((location) {
+                      return DropdownMenuItem<Locations>(
+                        value: location,
+                        child: Text(location.place),
+                      );
+                    }).toList(),
+                    onChanged: (Locations? value) {
+                      setState(() {
+                        _selectedLocation = value;
+                        debugPrint('Value Changed: ${value?.place}');
+                      });
+                    },
+                  ),
+                  const Text(
+                    'travel type to destination checkbox',
+                  ),
+                ],
+              ),
+            ),
             const Text(
-              'Your Location',
+              'travel time',
             ),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text('Open route'),
+            Container(
+              height: 300,
+              width: 350,
+              margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+              color: Colors.red,
+              child: const Text(
+                'Map',
+              ),
             ),
-            DropdownButton<Locations>(
-              value: _selectedLocation,
-              hint: Text(_dropdownHintText!), // Dynamic hint text
-              items: _locations.map((location) {
-                return DropdownMenuItem<Locations>(
-                  value: location,
-                  child: Text(location.place),
-                );
-              }).toList(),
-              onChanged: (Locations? value) {
-                setState(() {
-                  _selectedLocation = value;
-                  debugPrint('Value Changed: ${value?.place}');
-                });
-              },
-            )
+            Container(
+                height: 70,
+                width: 350,
+                margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                color: Colors.green,
+                child: Row(
+                  children: [
+                    const Text(
+                      'Final destination confirmation',
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Text('Open route'),
+                    ),
+                  ],
+                )),
           ],
         ),
       ),
@@ -100,13 +143,19 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-
-
-enum Locations {
-  placeA('Place A', 250, 100);
-
-  const Locations(this.place, this.lat, this.long);
+class Locations {
   final String place;
   final double lat;
   final double long;
+
+  Locations(this.place, this.lat, this.long);
 }
+// enum Locations {
+//   placeA('Place A', 250, 100);
+
+
+//   const Locations(this.place, this.lat, this.long);
+//   final String place;
+//   final double lat;
+//   final double long;
+// }
