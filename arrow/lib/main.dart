@@ -29,7 +29,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   Locations? _selectedLocation;
   String? _selectedPlaceString;
   String? _dropdownHintText;
@@ -39,8 +38,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     List<Locations> _locations = [
-      // Locations("placeA", 300, 400),
-      // Locations("placeB", 100, 400),
+      Locations("placeA", 300, 400),
+      Locations("placeB", 100, 400),
     ];
     if (_selectedLocation == null) {
       _dropdownHintText = 'Select Location';
