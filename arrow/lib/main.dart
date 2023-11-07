@@ -30,10 +30,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  Locations? _selectedLocation;
+  Locations? _selectedLocation = Locations("Select aLocation", 0, 0);
+  String? _selectedPlaceString;
   String? _dropdownHintText;
   String currentLocation = 'placeA';
-  String? _selectedOption;
+  String? _selectedOption = "None";
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
       Locations("placeA", 300, 400),
       Locations("placeB", 100, 400),
     ];
-
     if (_selectedLocation == null) {
       _dropdownHintText = 'Select Location';
     } else {
@@ -57,7 +57,8 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(//location and destination section
+            Container(
+              //location and destination section
               height: 200,
               width: 350,
               margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
@@ -66,7 +67,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Container(//display user's current location
+                  Container(
+                      //display user's current location
                       height: 50,
                       width: 350,
                       padding: const EdgeInsets.fromLTRB(5, 10, 10, 2),
@@ -83,7 +85,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ],
                       )),
-                  Container(//user choose where to go
+                  Container(
+                      //user choose where to go
                       height: 50,
                       width: 350,
                       padding: const EdgeInsets.fromLTRB(5, 10, 10, 2),
@@ -104,20 +107,24 @@ class _MyHomePageState extends State<MyHomePage> {
                             items: _locations.map((location) {
                               return DropdownMenuItem<Locations>(
                                 value: location,
-                                child: Text(location.place),
+                                child: Text(location.place.toString()),
                               );
                             }).toList(),
                             onChanged: (Locations? value) {
                               setState(() {
-                                _selectedLocation = value;
+                                _selectedLocation = new Locations(
+                                    value?.place, value?.lat, value?.long);
+                                _selectedPlaceString = value?.place;
                                 debugPrint(
                                     'Value Changed: ${value?.place}, ${value?.lat}, ${value?.long}');
+                                debugPrint('$_selectedLocation');
                               });
                             },
                           ),
                         ],
                       )),
-                  Column(//user choose how to go
+                  Column(
+                    //user choose how to go
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
@@ -204,10 +211,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-            const Text(//display travel time
+            const Text(
+              //display travel time
               'travel time',
             ),
-            Container(//display mapbox map(with route?)
+            Container(
+              //display mapbox map(with route?)
               height: 300,
               width: 350,
               margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
@@ -216,7 +225,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 'Map',
               ),
             ),
-            Container(//display the complete inforfamtion for the users location/destination, an give the button prompt to open the ar camera
+            Container(
+                //display the complete inforfamtion for the users location/destination, an give the button prompt to open the ar camera
+
                 height: 120,
                 width: 350,
                 margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
@@ -224,13 +235,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   children: [
                     Container(
-                      width:200,
-                      margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      child:const Text(
-                      'It will take [amount of time] to get from your current location to [destination location] by [method of travel]',
-                    )
-                    ),
-                    
+                        width: 200,
+                        margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                        child: Text(
+                          'It will take [amount of time] to get from your current location to ${_selectedPlaceString} by $_selectedOption',
+                        )),
                     ElevatedButton(
                       onPressed: () {},
                       child: const Text('Open route'),
@@ -245,9 +254,9 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class Locations {
-  final String place;
-  final double lat;
-  final double long;
+  String? place;
+  double? lat;
+  double? long;
 
   Locations(this.place, this.lat, this.long);
 
