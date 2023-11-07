@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(
+            Container(//location and destination section
               height: 200,
               width: 350,
               margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Container(
+                  Container(//display user's current location
                       height: 50,
                       width: 350,
                       padding: const EdgeInsets.fromLTRB(5, 10, 10, 2),
@@ -83,10 +83,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ],
                       )),
-                  Container(
+                  Container(//user choose where to go
                       height: 50,
                       width: 350,
-                      
                       padding: const EdgeInsets.fromLTRB(5, 10, 10, 2),
                       margin: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                       color: Colors.orange,
@@ -95,7 +94,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                           const Text(
                             'Go To: ',
-                            style: TextStyle(fontWeight: FontWeight.bold), textWidthBasis: TextWidthBasis.parent,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                            textWidthBasis: TextWidthBasis.parent,
                           ),
                           DropdownButton<Locations>(
                             value: _selectedLocation,
@@ -117,42 +117,83 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ],
                       )),
-                  Column(
+                  Column(//user choose how to go
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    
                     children: <Widget>[
                       Text('Choose one option:'),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text('Car'),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Icon(
+                                Icons.directions_car_filled_sharp,
+                                color: Colors.yellow,
+                                size: 32.0,
+                                semanticLabel: 'Travel by car',
+                              ),
+                              Text("Car")
+                            ],
+                          ),
                           Radio<String>(
                             value: 'driving',
                             groupValue: _selectedOption,
                             onChanged: (String? value) {
                               setState(() {
                                 _selectedOption = value;
+                                debugPrint(
+                                    'Method of travel: ${_selectedOption}');
                               });
                             },
                           ),
-                          Text('Bike'),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.directions_bike_outlined,
+                                color: Colors.yellow,
+                                size: 32.0,
+                                semanticLabel: 'Travel by Bike',
+                              ),
+                              Text("Cycling")
+                            ],
+                          ),
                           Radio<String>(
                             value: 'cycling',
                             groupValue: _selectedOption,
                             onChanged: (String? value) {
                               setState(() {
                                 _selectedOption = value;
+                                debugPrint(
+                                    'Method of travel: ${_selectedOption}');
                               });
                             },
                           ),
-                          Text('walk'),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.directions_walk_outlined,
+                                color: Colors.yellow,
+                                size: 32.0,
+                                semanticLabel: 'Travel by foot',
+                              ),
+                              Text("Walking")
+                            ],
+                          ),
                           Radio<String>(
                             value: 'walking',
                             groupValue: _selectedOption,
                             onChanged: (String? value) {
                               setState(() {
                                 _selectedOption = value;
+                                debugPrint(
+                                    'Method of travel: ${_selectedOption}');
                               });
                             },
                           ),
@@ -163,10 +204,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-            const Text(
+            const Text(//display travel time
               'travel time',
             ),
-            Container(
+            Container(//display mapbox map(with route?)
               height: 300,
               width: 350,
               margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
@@ -175,16 +216,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 'Map',
               ),
             ),
-            Container(
-                height: 70,
+            Container(//display the complete inforfamtion for the users location/destination, an give the button prompt to open the ar camera
+                height: 120,
                 width: 350,
                 margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                 color: Colors.green,
                 child: Row(
                   children: [
-                    const Text(
-                      'Final destination confirmation',
+                    Container(
+                      width:200,
+                      margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                      child:const Text(
+                      'It will take [amount of time] to get from your current location to [destination location] by [method of travel]',
+                    )
                     ),
+                    
                     ElevatedButton(
                       onPressed: () {},
                       child: const Text('Open route'),
