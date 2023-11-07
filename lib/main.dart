@@ -1,4 +1,8 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -48,7 +52,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    updateMyPosition();
+  }
+
   int _counter = 0;
+  Position? _position;
 
   void _incrementCounter() {
     setState(() {
@@ -58,6 +68,35 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+    });
+  }
+
+  // This method should make a call the mapbox api using the current devices location as well as the desired location
+  void callMapBox(destination) async {
+    log('attempting to call MapBox');
+
+    final response = await http.get(Uri.parse(
+        'https://api.mapbox.com/directions/v5/mapbox/walking/${_position!.latitude.toString()}%2C${_position!.longitude.toString()}%3B${destination!.latitude.toString()}%2C${destination!.longitude.toString()}?alternatives=false&continue_straight=true&geometries=geojson&language=en&overview=full&steps=true&access_token=pk.eyJ1IjoidHJ5Z29uMTE3IiwiYSI6ImNsb251eHZsMDE2bWoyaW5ybmxkMXN6b2wifQ.MFqc4EcWND4gkyK7XIZ0CQ'));
+    if (response.statusCode == 200) {
+      // Do something with the response data
+      log('response $response');
+    } else {
+      // Handle error
+    }
+  }
+
+  // calling this method will get the device's location and update the _position varible
+  void updateMyPosition() async {
+    log('attempting to get position');
+
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    log('position: $position');
+    log('lat: ${position.latitude}');
+
+    setState(() {
+      _position = position;
     });
   }
 
@@ -91,11 +130,11 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'Your Location',
+            Text(
+              'Your Location: ${_position != null ? _position!.latitude : ''}, ${_position != null ? _position!.longitude : ''}',
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: updateMyPosition,
               child: const Text('Open route'),
             ),
             DropdownButton(
