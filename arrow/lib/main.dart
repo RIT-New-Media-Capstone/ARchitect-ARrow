@@ -58,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
-              height: 260,
+              height: 200,
               width: 350,
               margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
               color: Colors.blue,
@@ -69,8 +69,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   Container(
                       height: 50,
                       width: 350,
-                      color: Colors.yellow,
+                      padding: const EdgeInsets.fromLTRB(5, 10, 10, 2),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           const Text(
                             'You are at:',
@@ -82,33 +83,52 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ],
                       )),
-                  DropdownButton<Locations>(
-                    value: _selectedLocation,
-                    hint: Text(_dropdownHintText!),
-                    items: _locations.map((location) {
-                      return DropdownMenuItem<Locations>(
-                        value: location,
-                        child: Text(location.place),
-                      );
-                    }).toList(),
-                    onChanged: (Locations? value) {
-                      setState(() {
-                        _selectedLocation = value;
-                        debugPrint(
-                            'Value Changed: ${value?.place}, ${value?.lat}, ${value?.long}');
-                      });
-                    },
-                  ),
+                  Container(
+                      height: 50,
+                      width: 350,
+                      
+                      padding: const EdgeInsets.fromLTRB(5, 10, 10, 2),
+                      margin: const EdgeInsets.fromLTRB(0, 0, 0, 12),
+                      color: Colors.orange,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Go To: ',
+                            style: TextStyle(fontWeight: FontWeight.bold), textWidthBasis: TextWidthBasis.parent,
+                          ),
+                          DropdownButton<Locations>(
+                            value: _selectedLocation,
+                            hint: Text(_dropdownHintText!),
+                            style: const TextStyle(color: Colors.black),
+                            items: _locations.map((location) {
+                              return DropdownMenuItem<Locations>(
+                                value: location,
+                                child: Text(location.place),
+                              );
+                            }).toList(),
+                            onChanged: (Locations? value) {
+                              setState(() {
+                                _selectedLocation = value;
+                                debugPrint(
+                                    'Value Changed: ${value?.place}, ${value?.lat}, ${value?.long}');
+                              });
+                            },
+                          ),
+                        ],
+                      )),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
+                    
                     children: <Widget>[
                       Text('Choose one option:'),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text('Car'),
                           Radio<String>(
-                            value: 'Option 1',
+                            value: 'driving',
                             groupValue: _selectedOption,
                             onChanged: (String? value) {
                               setState(() {
@@ -118,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           Text('Bike'),
                           Radio<String>(
-                            value: 'Option 2',
+                            value: 'cycling',
                             groupValue: _selectedOption,
                             onChanged: (String? value) {
                               setState(() {
@@ -128,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           Text('walk'),
                           Radio<String>(
-                            value: 'Option 3',
+                            value: 'walking',
                             groupValue: _selectedOption,
                             onChanged: (String? value) {
                               setState(() {
