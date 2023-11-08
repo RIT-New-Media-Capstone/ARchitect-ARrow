@@ -315,39 +315,36 @@ class Locations {
           place == other.place;
 
   @override
-  int get hashCode => place.hashCode;
+  int get hashCode => place.hashCode;}
 
-  @override
-  void initState() {
-    updateMyPosition();
-  }
-  // This method should make a call the mapbox api using the current devices location as well as the desired location
-  void callMapBox(destination) async {
-    log('attempting to call MapBox');
+  //@override
+  // void initState() {
+  //   updateMyPosition();
+  // }
+  // // This method should make a call the mapbox api using the current devices location as well as the desired location
+  // void callMapBox(destination) async {
+  //   log('attempting to call MapBox');
 
-    final response = await http.get(Uri.parse(
-        'https://api.mapbox.com/directions/v5/mapbox/walking/${_position!.latitude.toString()}%2C${_position!.longitude.toString()}%3B${destination!.latitude.toString()}%2C${destination!.longitude.toString()}?alternatives=false&continue_straight=true&geometries=geojson&language=en&overview=full&steps=true&access_token=pk.eyJ1IjoidHJ5Z29uMTE3IiwiYSI6ImNsb251eHZsMDE2bWoyaW5ybmxkMXN6b2wifQ.MFqc4EcWND4gkyK7XIZ0CQ'));
-    if (response.statusCode == 200) {
-      // Do something with the response data
-      log('response $response');
-    } else {
-      // Handle error
-    }
-  }
+  //   final response = await http.get(Uri.parse(
+  //       'https://api.mapbox.com/directions/v5/mapbox/walking/${_position!.latitude.toString()}%2C${_position!.longitude.toString()}%3B${destination!.latitude.toString()}%2C${destination!.longitude.toString()}?alternatives=false&continue_straight=true&geometries=geojson&language=en&overview=full&steps=true&access_token=pk.eyJ1IjoidHJ5Z29uMTE3IiwiYSI6ImNsb251eHZsMDE2bWoyaW5ybmxkMXN6b2wifQ.MFqc4EcWND4gkyK7XIZ0CQ'));
+  //   if (response.statusCode == 200) {
+  //     // Do something with the response data
+  //     log('response $response');
+  //   } else {
+  //     // Handle error
+  //   }
+  // }
 
-  // calling this method will get the device's location and update the _position varible
-  void updateMyPosition() async {
-    log('attempting to get position');
+  // // calling this method will get the device's location and update the _position varible
+  // void updateMyPosition() async {
+  //   log('attempting to get position');
 
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+  //   Position position = await Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.high);
 
-    log('position: $position');
-    log('lat: ${position.latitude}');
+  //   log('position: $position');
+  //   log('lat: ${position.latitude}');
 
-    setState(() {
-      _position = position;
-    });
-  }
-
-}
+  //   setState(() {
+  //     _position = position;
+  //   });
