@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:developer';
-import 'package:flutter/material.dart';
-import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
+//import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
@@ -42,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Locations> _locations = [
+    List<Locations> locations = [
       Locations("Niagara Falls", 43.092461, 79.047150),
       Locations("District of Columbia", 38.895, -77.03667),
     ];
@@ -74,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 5,
                     blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
+                    offset: const Offset(0, 3), // changes position of shadow
                   ),
                 ],
               ),
@@ -89,16 +88,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       width: 350,
                       padding: const EdgeInsets.fromLTRB(5, 10, 0, 2),
                       margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'You are at:  ',
-                            style: TextStyle(fontWeight: FontWeight.bold,),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          const Text(
+                          Text(
                             'user location',
-                            style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromARGB(255, 144, 190, 109)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 144, 190, 109)),
                           ),
                         ],
                       )),
@@ -120,15 +123,21 @@ class _MyHomePageState extends State<MyHomePage> {
                             value: _selectedLocation,
                             hint: Text(_dropdownHintText!),
                             style: const TextStyle(color: Colors.black),
-                            items: _locations.map((location) {
+                            items: locations.map((location) {
                               return DropdownMenuItem<Locations>(
                                 value: location,
-                                child: Text(location.place.toString(), style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromARGB(255, 144, 190, 109)),),
+                                child: Text(
+                                  location.place.toString(),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          Color.fromARGB(255, 144, 190, 109)),
+                                ),
                               );
                             }).toList(),
                             onChanged: (Locations? value) {
                               setState(() {
-                                _selectedLocation = new Locations(
+                                _selectedLocation = Locations(
                                     value?.place, value?.lat, value?.long);
                                 _selectedPlaceString = value?.place;
                                 debugPrint(
@@ -144,17 +153,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text('Choose one option:'),
+                      const Text('Choose one option:'),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Column(
+                          const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Icon(
                                 Icons.directions_car_filled_sharp,
-                                color: const Color.fromARGB(255, 201, 227, 172),
+                                color: Color.fromARGB(255, 201, 227, 172),
                                 size: 32.0,
                                 semanticLabel: 'Travel by car',
                               ),
@@ -171,17 +180,17 @@ class _MyHomePageState extends State<MyHomePage> {
                               setState(() {
                                 _selectedOption = value;
                                 debugPrint(
-                                    'Method of travel: ${_selectedOption}');
+                                    'Method of travel: $_selectedOption');
                               });
                             },
                           ),
-                          Column(
+                          const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Icon(
                                 Icons.directions_bike_outlined,
-                                color: const Color.fromARGB(255, 201, 227, 172),
+                                color: Color.fromARGB(255, 201, 227, 172),
                                 size: 32.0,
                                 semanticLabel: 'Travel by Bike',
                               ),
@@ -198,17 +207,17 @@ class _MyHomePageState extends State<MyHomePage> {
                               setState(() {
                                 _selectedOption = value;
                                 debugPrint(
-                                    'Method of travel: ${_selectedOption}');
+                                    'Method of travel: $_selectedOption');
                               });
                             },
                           ),
-                          Column(
+                          const Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Icon(
                                 Icons.directions_walk_outlined,
-                                color: const Color.fromARGB(255, 201, 227, 172),
+                                color: Color.fromARGB(255, 201, 227, 172),
                                 size: 32.0,
                                 semanticLabel: 'Travel by foot',
                               ),
@@ -225,7 +234,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               setState(() {
                                 _selectedOption = value;
                                 debugPrint(
-                                    'Method of travel: ${_selectedOption}');
+                                    'Method of travel: $_selectedOption');
                               });
                             },
                           ),
@@ -241,7 +250,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                     child: const Text(
                       //display travel time
-                      'It will take about [travel time]',style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromARGB(255, 144, 190, 109)),
+                      'It will take about [travel time]',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 144, 190, 109)),
                     ),
                   ),
                 ],
@@ -265,30 +277,34 @@ class _MyHomePageState extends State<MyHomePage> {
                 margin: const EdgeInsets.fromLTRB(0, 12, 0, 0),
                 padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                 decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
-                  ),
-                ],
-              ),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
                 child: Row(
                   children: [
                     Container(
                         width: 200,
                         margin: const EdgeInsets.fromLTRB(20, 5, 10, 5),
                         child: Text(
-                          'It will take [amount of time] to get from your current location to ${_selectedPlaceString} by $_selectedOption',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromARGB(255, 144, 190, 109)),
+                          'It will take [amount of time] to get from your current location to $_selectedPlaceString by $_selectedOption',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 144, 190, 109)),
                         )),
                     ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 234, 144, 16),),
+                        backgroundColor:
+                            const Color.fromARGB(255, 234, 144, 16),
+                      ),
                       child: const Text('Open route'),
                     ),
                   ],
@@ -317,26 +333,11 @@ class Locations {
   @override
   int get hashCode => place.hashCode;
 
-  @override
   void initState() {
     updateMyPosition();
   }
-  // This method should make a call the mapbox api using the current devices location as well as the desired location
-  void callMapBox(destination) async {
-    log('attempting to call MapBox');
 
-    final response = await http.get(Uri.parse(
-        'https://api.mapbox.com/directions/v5/mapbox/walking/${_position!.latitude.toString()}%2C${_position!.longitude.toString()}%3B${destination!.latitude.toString()}%2C${destination!.longitude.toString()}?alternatives=false&continue_straight=true&geometries=geojson&language=en&overview=full&steps=true&access_token=pk.eyJ1IjoidHJ5Z29uMTE3IiwiYSI6ImNsb251eHZsMDE2bWoyaW5ybmxkMXN6b2wifQ.MFqc4EcWND4gkyK7XIZ0CQ'));
-    if (response.statusCode == 200) {
-      // Do something with the response data
-      log('response $response');
-    } else {
-      // Handle error
-    }
-  }
-
-  // calling this method will get the device's location and update the _position varible
-  void updateMyPosition() async {
+  updateMyPosition() async {
     log('attempting to get position');
 
     Position position = await Geolocator.getCurrentPosition(
@@ -345,9 +346,26 @@ class Locations {
     log('position: $position');
     log('lat: ${position.latitude}');
 
-    setState(() {
-      _position = position;
-    });
+    // setState(() {
+    //   _position = position;
+    // });
+    return position;
   }
 
+  // This method should make a call the mapbox api using the current devices location as well as the desired location
+  void callMapBox(dynamic destination, Position position) async {
+    log('attempting to call MapBox');
+
+    final response = await http.get(Uri.parse(
+        'https://api.mapbox.com/directions/v5/mapbox/walking/${position.latitude.toString()}%2C${position.longitude.toString()}%3B${destination!.latitude.toString()}%2C${destination!.longitude.toString()}?alternatives=false&continue_straight=true&geometries=geojson&language=en&overview=full&steps=true&access_token=pk.eyJ1IjoidHJ5Z29uMTE3IiwiYSI6ImNsb251eHZsMDE2bWoyaW5ybmxkMXN6b2wifQ.MFqc4EcWND4gkyK7XIZ0CQ'));
+    if (response.statusCode == 200) {
+      // Do something with the response data
+      log('response $response');
+    } else {
+      print("Sorry, try again.");
+      // Handle error
+    }
+  }
+
+  // calling this method will get the device's location and update the _position varible
 }
