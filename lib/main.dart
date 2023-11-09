@@ -42,8 +42,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<Location> locations = [
     Location("Crossroads", -77.680056, 43.082633),
-    Location("Niagara Falls", 79.047150, 43.092461),
-    Location("District of Columbia", -77.03667, 38.895),
+    Location("Magic Spell Studios", -77.676657, 43.085648),
+    Location("Niagara Falls", -79.0377, 43.0962),
   ];
 
   @override
@@ -193,9 +193,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             onChanged: (Location? value) {
                               setState(() {
                                 _selectedLocation = Location(
-                                    value?.place, value?.lat, value?.long);
+                                    value?.place, value?.long, value?.lat);
                                 debugPrint(
-                                    'Value Changed: ${value?.place}, ${value?.lat}, ${value?.long}');
+                                    'Value Changed: ${value?.place}, ${value?.long}, ${value?.lat}');
                                 debugPrint('$_selectedLocation');
                               });
                             },
@@ -354,7 +354,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               color: Color.fromARGB(255, 144, 190, 109)),
                         )),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        callMapBox(_selectedLocation!, _currentPosition!);
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
                             const Color.fromARGB(255, 234, 144, 16),
