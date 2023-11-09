@@ -33,23 +33,71 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Locations? _selectedLocation;
+  Location? _selectedLocation;
   String? _selectedPlaceString;
   String? _dropdownHintText;
-  String currentLocation = 'placeA';
-  String? _selectedOption = "None";
+  Location? _currentPosition = Location("My Position", 0, 0);
+  String? _navigationMode = "driving";
+
+  @override
+  void initState() {
+    super.initState();
+    updateMyPosition();
+  }
+
+  updateMyPosition() async {
+    log('attempting to get position');
+
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    log('position: $position');
+    log('lat: ${position.latitude}');
+
+    setState(() {
+      _currentPosition =
+          Location("My Position", position.longitude, position.latitude);
+    });
+  }
+
+  // This method should make a call the mapbox api using the current devices location as well as the desired location
+  void callMapBox(Location destination, Location position) async {
+    log('attempting to call MapBox');
+
+    String url =
+        'https://api.mapbox.com/directions/v5/mapbox/${_navigationMode}/${position.long}%2C${position.lat}%3B${destination!.long}%2C${destination!.lat}?alternatives=false&continue_straight=true&geometries=geojson&language=en&overview=full&steps=true&access_token=pk.eyJ1IjoidHJ5Z29uMTE3IiwiYSI6ImNsb251eHZsMDE2bWoyaW5ybmxkMXN6b2wifQ.MFqc4EcWND4gkyK7XIZ0CQ';
+
+    print(url);
+
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      // Do something with the response data
+      log('response: $response');
+    } else {
+      // ignore_for_file: avoid_print
+      print("Sorry, try again.");
+      log('$response');
+      // Handle error
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    List<Locations> locations = [
-      Locations("Niagara Falls", 43.092461, 79.047150),
-      Locations("District of Columbia", 38.895, -77.03667),
+    List<Location> locations = [
+      Location("Crossroads", -77.680056, 43.082633),
+      Location("Niagara Falls", 79.047150, 43.092461),
+      Location("District of Columbia", -77.03667, 38.895),
     ];
+
+    _selectedLocation = locations[0];
+
     if (_selectedLocation == null) {
       _dropdownHintText = 'Select Location';
     } else {
       _dropdownHintText = _selectedLocation!.place;
     }
+
+    callMapBox(_selectedLocation!, _currentPosition!);
 
     return Scaffold(
       appBar: AppBar(
@@ -88,18 +136,18 @@ class _MyHomePageState extends State<MyHomePage> {
                       width: 350,
                       padding: const EdgeInsets.fromLTRB(5, 10, 0, 2),
                       margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            'You are at:  ',
+                          const Text(
+                            'You are at: ',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            'user location',
-                            style: TextStyle(
+                            '${_currentPosition!.lat}, ${_currentPosition!.long}',
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromARGB(255, 144, 190, 109)),
                           ),
@@ -119,12 +167,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             style: TextStyle(fontWeight: FontWeight.bold),
                             textWidthBasis: TextWidthBasis.parent,
                           ),
-                          DropdownButton<Locations>(
+                          DropdownButton<Location>(
                             value: _selectedLocation,
                             hint: Text(_dropdownHintText!),
                             style: const TextStyle(color: Colors.black),
                             items: locations.map((location) {
-                              return DropdownMenuItem<Locations>(
+                              return DropdownMenuItem<Location>(
                                 value: location,
                                 child: Text(
                                   location.place.toString(),
@@ -135,9 +183,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               );
                             }).toList(),
-                            onChanged: (Locations? value) {
+                            onChanged: (Location? value) {
                               setState(() {
-                                _selectedLocation = Locations(
+                                _selectedLocation = Location(
                                     value?.place, value?.lat, value?.long);
                                 _selectedPlaceString = value?.place;
                                 debugPrint(
@@ -175,12 +223,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             fillColor: MaterialStateColor.resolveWith(
                                 (states) =>
                                     const Color.fromARGB(255, 234, 144, 16)),
-                            groupValue: _selectedOption,
+                            groupValue: _navigationMode,
                             onChanged: (String? value) {
                               setState(() {
-                                _selectedOption = value;
+                                _navigationMode = value;
                                 debugPrint(
-                                    'Method of travel: $_selectedOption');
+                                    'Method of travel: $_navigationMode');
                               });
                             },
                           ),
@@ -202,12 +250,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             fillColor: MaterialStateColor.resolveWith(
                                 (states) =>
                                     const Color.fromARGB(255, 234, 144, 16)),
-                            groupValue: _selectedOption,
+                            groupValue: _navigationMode,
                             onChanged: (String? value) {
                               setState(() {
-                                _selectedOption = value;
+                                _navigationMode = value;
                                 debugPrint(
-                                    'Method of travel: $_selectedOption');
+                                    'Method of travel: $_navigationMode');
                               });
                             },
                           ),
@@ -229,12 +277,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             fillColor: MaterialStateColor.resolveWith(
                                 (states) =>
                                     const Color.fromARGB(255, 234, 144, 16)),
-                            groupValue: _selectedOption,
+                            groupValue: _navigationMode,
                             onChanged: (String? value) {
                               setState(() {
-                                _selectedOption = value;
+                                _navigationMode = value;
                                 debugPrint(
-                                    'Method of travel: $_selectedOption');
+                                    'Method of travel: $_navigationMode');
                               });
                             },
                           ),
@@ -244,7 +292,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   Container(
                     //display the button to open the ar camera
-                    height: 50,
+                    height: 48,
                     width: 350,
                     alignment: Alignment.center,
                     margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
@@ -294,7 +342,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         width: 200,
                         margin: const EdgeInsets.fromLTRB(20, 5, 10, 5),
                         child: Text(
-                          'It will take [amount of time] to get from your current location to $_selectedPlaceString by $_selectedOption',
+                          'It will take [amount of time] to get from your current location to $_selectedPlaceString by $_navigationMode',
                           style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Color.fromARGB(255, 144, 190, 109)),
@@ -316,57 +364,22 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class Locations {
+class Location {
   String? place;
   double? lat;
   double? long;
 
-  Locations(this.place, this.lat, this.long);
+  Location(this.place, this.long, this.lat);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Locations &&
+      other is Location &&
           runtimeType == other.runtimeType &&
           place == other.place;
 
   @override
   int get hashCode => place.hashCode;
 
-  void initState() {
-    updateMyPosition();
-  }
-
-  updateMyPosition() async {
-    log('attempting to get position');
-
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-
-    log('position: $position');
-    log('lat: ${position.latitude}');
-
-    // setState(() {
-    //   _position = position;
-    // });
-    return position;
-  }
-
-  // This method should make a call the mapbox api using the current devices location as well as the desired location
-  void callMapBox(dynamic destination, Position position) async {
-    log('attempting to call MapBox');
-
-    final response = await http.get(Uri.parse(
-        'https://api.mapbox.com/directions/v5/mapbox/walking/${position.latitude.toString()}%2C${position.longitude.toString()}%3B${destination!.latitude.toString()}%2C${destination!.longitude.toString()}?alternatives=false&continue_straight=true&geometries=geojson&language=en&overview=full&steps=true&access_token=pk.eyJ1IjoidHJ5Z29uMTE3IiwiYSI6ImNsb251eHZsMDE2bWoyaW5ybmxkMXN6b2wifQ.MFqc4EcWND4gkyK7XIZ0CQ'));
-    if (response.statusCode == 200) {
-      // Do something with the response data
-      log('response $response');
-    } else {
-      // ignore_for_file: avoid_print
-      print("Sorry, try again.");
-      // Handle error
-    }
-  }
-
-  // calling this method will get the device's location and update the _position varible
+  void initState() {}
 }
