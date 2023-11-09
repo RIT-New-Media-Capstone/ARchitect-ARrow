@@ -11,6 +11,14 @@ Ideally, in the OVP stage of this project, there will be an AR Arrow that leads 
 
 The user is able to select a type of travel; Cycling, Walking, Driving. Based on that, there are a number of seconds that are calculated into the decision. Seconds are a universal method of time keeping, and therefore a more optimal and elite form of time knowledge. 
 
++ Google Maps is a really awesome Application
++ API Keys from Google are free for some services
++ They give new users money as credits for investment upon sign up
++ API Keys can be restricted or non restricted for either one or multiple APIs
++ Time is our greatest resource
+
+
+
 > [!WARNING]
 > The Map does not work. (Broken)
 
@@ -28,4 +36,6 @@ The user is able to select a type of travel; Cycling, Walking, Driving. Based on
 > Mapbox API Overview: https://docs.mapbox.com/api/overview/ <br>
 > Directions API: https://docs.mapbox.com/api/navigation/directions/ <br>
 > ARCore Flutter Plugin https://pub.dev/packages/arcore_flutter_plugin <br>
-> Attempted Geospatial Introduction via Kotlin / Java https://developers.google.com/ar/develop/java/geospatial/quickstart
+> ARCore Introductory Tutorial https://www.youtube.com/watch?v=bZobARdf8jk <br>
+> Attempted Geospatial Introduction via Kotlin / Java https://developers.google.com/ar/develop/java/geospatial/quickstart<br>
+> How to Document https://docs.github.com/get-started
