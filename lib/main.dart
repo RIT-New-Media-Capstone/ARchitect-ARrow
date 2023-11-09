@@ -3,6 +3,7 @@ import 'dart:developer';
 //import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(const MyApp());
@@ -34,14 +35,28 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Location? _selectedLocation;
-  String? _selectedPlaceString;
   String? _dropdownHintText;
   Location? _currentPosition = Location("My Position", 0, 0);
   String? _navigationMode = "driving";
+  String? _duration = "0 Seconds";
+
+  List<Location> locations = [
+    Location("Crossroads", -77.680056, 43.082633),
+    Location("Niagara Falls", 79.047150, 43.092461),
+    Location("District of Columbia", -77.03667, 38.895),
+  ];
 
   @override
   void initState() {
     super.initState();
+    _selectedLocation = locations[0];
+
+    if (_selectedLocation == null) {
+      _dropdownHintText = 'Select Location';
+    } else {
+      _dropdownHintText = _selectedLocation!.place;
+    }
+
     updateMyPosition();
   }
 
@@ -58,6 +73,8 @@ class _MyHomePageState extends State<MyHomePage> {
       _currentPosition =
           Location("My Position", position.longitude, position.latitude);
     });
+
+    callMapBox(_selectedLocation!, _currentPosition!);
   }
 
   // This method should make a call the mapbox api using the current devices location as well as the desired location
@@ -72,7 +89,13 @@ class _MyHomePageState extends State<MyHomePage> {
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       // Do something with the response data
-      log('response: $response');
+      Map<String, dynamic> data = json.decode(response.body);
+      log('response:');
+      print(data);
+      print(data["routes"][0]["duration"]);
+      setState(() {
+        _duration = '${data["routes"][0]["duration"]} Seconds';
+      });
     } else {
       // ignore_for_file: avoid_print
       print("Sorry, try again.");
@@ -83,22 +106,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Location> locations = [
-      Location("Crossroads", -77.680056, 43.082633),
-      Location("Niagara Falls", 79.047150, 43.092461),
-      Location("District of Columbia", -77.03667, 38.895),
-    ];
-
-    _selectedLocation = locations[0];
-
-    if (_selectedLocation == null) {
-      _dropdownHintText = 'Select Location';
-    } else {
-      _dropdownHintText = _selectedLocation!.place;
-    }
-
-    callMapBox(_selectedLocation!, _currentPosition!);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -187,7 +194,6 @@ class _MyHomePageState extends State<MyHomePage> {
                               setState(() {
                                 _selectedLocation = Location(
                                     value?.place, value?.lat, value?.long);
-                                _selectedPlaceString = value?.place;
                                 debugPrint(
                                     'Value Changed: ${value?.place}, ${value?.lat}, ${value?.long}');
                                 debugPrint('$_selectedLocation');
@@ -296,10 +302,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     width: 350,
                     alignment: Alignment.center,
                     margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                    child: const Text(
+                    child: Text(
                       //display travel time
-                      'It will take about [travel time]',
-                      style: TextStyle(
+                      'It will take about $_duration',
+                      style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Color.fromARGB(255, 144, 190, 109)),
                     ),
@@ -342,7 +348,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         width: 200,
                         margin: const EdgeInsets.fromLTRB(20, 5, 10, 5),
                         child: Text(
-                          'It will take [amount of time] to get from your current location to $_selectedPlaceString by $_navigationMode',
+                          'It will take $_duration to get from your current location to ${_selectedLocation!.place} by $_navigationMode',
                           style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Color.fromARGB(255, 144, 190, 109)),
