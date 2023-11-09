@@ -362,6 +362,7 @@ class Locations {
       // Do something with the response data
       log('response $response');
     } else {
+      // ignore_for_file: avoid_print
       print("Sorry, try again.");
       // Handle error
     }
