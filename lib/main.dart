@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:developer';
-//import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
+import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart'; //arcore plugin
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+var geoSpatialAPIKey = "AIzaSyC5r1F1Ua0XzKxP7ckoFDL6lezYote52E8";
 
 void main() {
   runApp(const MyApp());
