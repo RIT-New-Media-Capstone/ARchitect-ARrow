@@ -197,6 +197,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 debugPrint(
                                     'Value Changed: ${value?.place}, ${value?.long}, ${value?.lat}');
                                 debugPrint('$_selectedLocation');
+                                callMapBox(
+                                    _selectedLocation!, _currentPosition!);
                               });
                             },
                           ),
@@ -235,6 +237,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 _navigationMode = value;
                                 debugPrint(
                                     'Method of travel: $_navigationMode');
+                                callMapBox(
+                                    _selectedLocation!, _currentPosition!);
                               });
                             },
                           ),
@@ -262,6 +266,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 _navigationMode = value;
                                 debugPrint(
                                     'Method of travel: $_navigationMode');
+                                callMapBox(
+                                    _selectedLocation!, _currentPosition!);
                               });
                             },
                           ),
@@ -289,6 +295,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 _navigationMode = value;
                                 debugPrint(
                                     'Method of travel: $_navigationMode');
+                                callMapBox(
+                                    _selectedLocation!, _currentPosition!);
                               });
                             },
                           ),
