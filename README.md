@@ -10,4 +10,9 @@ The application uses concepts like Google Maps and other GPS-like devices/applic
 ## Resources
 > [!NOTE]
 > Mapbox API Overview: https://docs.mapbox.com/api/overview/ <br>
-> Directions API: https://docs.mapbox.com/api/navigation/directions/
+> Directions API: https://docs.mapbox.com/api/navigation/directions/ <br>
+> ARCore Flutter Plugin https://pub.dev/packages/arcore_flutter_plugin
+
+## Google Maps API Key AIzaSyBzrfimwMP5YjDUTCLl1hijUmu9Ce4ixmk
+## Credentials API Key AIzaSyC5r1F1Ua0XzKxP7ckoFDL6lezYote52E8 (Geospatial API)
+## id boxwood-magnet-404605

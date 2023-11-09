@@ -6,3 +6,11 @@
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
+
+<!-- <meta-data
+    android:name="com.google.android.ar.API_KEY"
+    android:value="AIzaSyC5r1F1Ua0XzKxP7ckoFDL6lezYote52E8" />
+
+<meta-data
+    android:name="com.google.android.geo.API_KEY"
+    android:value="AIzaSyC5r1F1Ua0XzKxP7ckoFDL6lezYote52E8" /> -->
