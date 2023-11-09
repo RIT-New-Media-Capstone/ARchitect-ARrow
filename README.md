@@ -16,12 +16,12 @@ The user is able to select a type of travel; Cycling, Walking, Driving. Based on
 
 ## Take Aways
 > [!IMPORTANT]
-> There were attempts made at developing AR Code into this project, unsuccessfully. <br>
-> The code should have encompassed the AR Core functionalities first before attempting to bring everything together <br>
-> UI Could be worked on lastly instead of firstly, regardless that Dart is larger based on UI Widgets. <br>
-> Mapbox API and ARCore are most likely not as compatible as first thought and Geospatial API from Google would have worked just fine <br>
-> Although Geospatial API would worked well for us, Kotlin/Java is the more preferred language given knowledgeable tutorials and Android Studio <br>
-> Do not try to recreate the wheel -- use what resources can be found and develop something based on those ideas to create something new and familiar <br>
+> There were attempts made at developing AR Code into this project, unsuccessfully. <br><br>
+> The code should have encompassed the AR Core functionalities first before attempting to bring everything together <br><br>
+> UI Could be worked on lastly instead of firstly, regardless that Dart is larger based on UI Widgets. <br><br>
+> Mapbox API and ARCore are most likely not as compatible as first thought and Geospatial API from Google would have worked just fine <br><br>
+> Although Geospatial API would worked well for us, Kotlin/Java is the more preferred language given knowledgeable tutorials and Android Studio <br><br>
+> Do not try to recreate the wheel -- use what resources can be found and develop something based on those ideas to create something new and familiar <br><br>
 
 ## Resources
 > [!NOTE]
